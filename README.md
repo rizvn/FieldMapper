@@ -29,14 +29,14 @@ Example table schema:
          email varchar(255), 
          lastUpdated TIMESTAMP)
 
-#### 1. Create class, and annotate fields with @Column
-We want to run a query to select all users and map the results to a User class. So we first defined a user class
+#### 1. Create class, and annotate fields with @Column (com.rizvn.fieldmapper.annotation.Column)
+Define a class to which we want to map results to.
 
     public class User {
        @Column
        String firstName;
 
-       @Column("lastName")
+       @Column("lastName") //names are optional
        String lastName;
 
        @Column
@@ -49,7 +49,7 @@ We want to run a query to select all users and map the results to a User class. 
     }
 
 #### 2. Run query
-Now use spring's jdbcTemplate to run the query and return a list of maps.
+Run the query and return a list of maps. Below is a Spring JDBC Template example.
     
     List<Map<String, Object>> results = jdbcTemplate.queryForList("SELECT * FROM USERS");
 
@@ -60,20 +60,20 @@ Now we call `FieldMapper.mapListToObjectList(..)` to map the list of maps to lis
 
 
 ## @Column
-By default FieldMapper will look for the key that matches the instance variable name in the map. You can override this behavior by specifying the database column name manually `@Column('FIRST_NAME')`.
+By default FieldMapper will look for the key that matches the instance variable name in the map. You can override this behavior by specifying the database column name manually i.e `@Column('FIRST_NAME')`.
 
 Once the key is found, instance variable value will be set to the key's value. It will transparently handle most java types. However you may provide your own handlers through the `typeHandler` attribute on @Column `@Column(typeHandler = TimestampToJodaDateTime.class)`
 
 ##TypeHandler
-Below is the type handler interface
+Below is the TypeHandler interface
 
     public interface TypeHandler {
       public <TargetType> TargetType transform(Object src);
     }
 
-It takes the key's the value, transforms it, and returns a new value to be set as instance variable value.
+It takes value from the map and returns the transformed value, which will be set as the instance variable value.
 
-Below is the code for `TimestampToJodaDateTime` type handle used in the User Class example above. `java.sql.Timestamp` is converted  to a DateTime object. The returned value will be set as instance variable value.
+Below is the code for `TimestampToJodaDateTime` Type handler used in the User Class example above. `java.sql.Timestamp` is converted  to a DateTime object. The returned value will be set as instance variable value.
 
     public class TimestampToJodaDateTime implements TypeHandler{
       @Override
