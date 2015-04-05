@@ -54,9 +54,9 @@ Below is the type handler interface
       public <TargetType> TargetType transform(Object src);
     }
 
-It takes the keys the value, transforms and returns a new value to be set as instance variable value.
+It takes the key's the value, transforms it, and returns a new value to be set as instance variable value.
 
-Below is the code for `TimestampToJodaDateTime` type handle used in the User Class above. `java.sql.Timestamp` is returned from the db. we convert it to a DateTime object and return the new object. The returned value will be set on the object. 
+Below is the code for `TimestampToJodaDateTime` type handle used in the User Class example above. `java.sql.Timestamp` is converted  to a DateTime object. The returned value will be set as instance variable value.
 
     public class TimestampToJodaDateTime implements TypeHandler{
       @Override
