@@ -30,7 +30,7 @@ Example table schema:
          lastUpdated TIMESTAMP)
 
 #### 1. Create class, and annotate fields with @Column
-We want run a query to select all users and map, the results to a User class. So we first defined a user class
+We want to run a query to select all users and map the results to a User class. So we first defined a user class
 
     public class User {
        @Column
