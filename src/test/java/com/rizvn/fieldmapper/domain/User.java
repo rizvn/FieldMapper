@@ -1,7 +1,6 @@
 package com.rizvn.fieldmapper.domain;
 
 import com.rizvn.fieldmapper.annotation.Column;
-import com.rizvn.fieldmapper.typehandler.TimestampToJodaDateTime;
 import org.joda.time.DateTime;
 
 /**
