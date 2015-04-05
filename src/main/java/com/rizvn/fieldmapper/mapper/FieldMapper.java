@@ -1,14 +1,12 @@
 package com.rizvn.fieldmapper.mapper;
 
 import com.rizvn.fieldmapper.annotation.Column;
-import com.rizvn.fieldmapper.types.TypeHandler;
+import com.rizvn.fieldmapper.typehandler.TypeHandler;
 
-import javax.swing.tree.RowMapper;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

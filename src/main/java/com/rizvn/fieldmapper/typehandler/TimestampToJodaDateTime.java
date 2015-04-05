@@ -1,4 +1,4 @@
-package com.rizvn.fieldmapper.types;
+package com.rizvn.fieldmapper.typehandler;
 
 import org.joda.time.DateTime;
 
@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 public class TimestampToJodaDateTime implements TypeHandler{
 
   @Override
-  public <T> T transform(Object src) {
+  public DateTime transform(Object src) {
     Timestamp timestamp = (Timestamp) src;
-    return (T) new DateTime(timestamp);
+    return new DateTime(timestamp);
   }
 }

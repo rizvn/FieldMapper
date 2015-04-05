@@ -1,4 +1,4 @@
-package com.rizvn.fieldmapper.types;
+package com.rizvn.fieldmapper.typehandler;
 
 /**
  * @author Riz
