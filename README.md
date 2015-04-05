@@ -1,7 +1,8 @@
 # Field Mapper
 A library to convert list of maps `List<Map<String,Object>>` to a list of objects. It can be used with database access libraries such as spring jdbc, and JDBI which can return a list of maps from queries.
 
-##Maven repository
+##Maven
+The jars are hosted in github repo:
 
       <repositories>
             <repository>
@@ -9,6 +10,14 @@ A library to convert list of maps `List<Map<String,Object>>` to a list of object
                 <url>https://raw.github.com/rizvn/FieldMapper/mvn-repo/</url>
             </repository>
       </repositories>
+
+The maven dependency is:
+
+    <dependency>
+       <groupId>com.rizvn</groupId>
+       <artifactId>fieldMapper</artifactId>
+       <version>0.1</version>
+    </dependency>
 
 ## Usage
 Example table schema:
