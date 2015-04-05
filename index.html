@@ -1,37 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <title>Field Mapper by rizvn</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>Fieldmapper by rizvn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
 
-        <header>
-          <h1>Fieldmapper</h1>
-          <h2>A library to convert a list of maps to a list of objects. </h2>
-        </header>
+      <header>
+        <h1>Field Mapper</h1>
+        <p>A library to convert a list of maps to a list of objects. </p>
+      </header>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/rizvn/FieldMapper/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/rizvn/FieldMapper/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/rizvn/FieldMapper" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+      <div id="banner">
+        <span id="logo"></span>
 
-        <hr>
+        <a href="https://github.com/rizvn/FieldMapper" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/rizvn/FieldMapper/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/rizvn/FieldMapper/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
 
-        <section id="main_content">
-          <h1>
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
 <a id="field-mapper" class="anchor" href="#field-mapper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Field Mapper</h1>
 
 <p>A library to convert list of maps <code>List&lt;Map&lt;String,Object&gt;&gt;</code> to a list of objects. It can be used with database access libraries such as spring jdbc, and JDBI which can return a list of maps from queries.</p>
@@ -72,16 +80,15 @@
 </code></pre>
 
 <h4>
-<a id="1-create-class-and-annotate-fields-with-column" class="anchor" href="#1-create-class-and-annotate-fields-with-column" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Create class, and annotate fields with <a href="https://github.com/Column" class="user-mention">@Column</a>
-</h4>
+<a id="1-create-class-and-annotate-fields-with-column-comrizvnfieldmapperannotationcolumn" class="anchor" href="#1-create-class-and-annotate-fields-with-column-comrizvnfieldmapperannotationcolumn" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Create class, and annotate fields with <a href="https://github.com/Column" class="user-mention">@Column</a> (com.rizvn.fieldmapper.annotation.Column)</h4>
 
-<p>We want to run a query to select all users and map the results to a User class. So we first defined a user class</p>
+<p>Define a class to which we want to map results to.</p>
 
 <pre><code>public class User {
    @Column
    String firstName;
 
-   @Column("lastName")
+   @Column("lastName") //names are optional
    String lastName;
 
    @Column
@@ -97,7 +104,7 @@
 <h4>
 <a id="2-run-query" class="anchor" href="#2-run-query" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Run query</h4>
 
-<p>Now use spring's jdbcTemplate to run the query and return a list of maps.</p>
+<p>Run the query and return a list of maps. Below is a Spring JDBC Template example.</p>
 
 <pre><code>List&lt;Map&lt;String, Object&gt;&gt; results = jdbcTemplate.queryForList("SELECT * FROM USERS");
 </code></pre>
@@ -114,23 +121,23 @@
 <a id="column" class="anchor" href="#column" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://github.com/Column" class="user-mention">@Column</a>
 </h2>
 
-<p>By default FieldMapper will look for the key that matches the instance variable name in the map. You can override this behavior by specifying the database column name manually <code>@Column('FIRST_NAME')</code>.</p>
+<p>By default FieldMapper will look for the key that matches the instance variable name in the map. You can override this behavior by specifying the database column name manually i.e <code>@Column('FIRST_NAME')</code>.</p>
 
 <p>Once the key is found, instance variable value will be set to the key's value. It will transparently handle most java types. However you may provide your own handlers through the <code>typeHandler</code> attribute on <a href="https://github.com/Column" class="user-mention">@Column</a> <code>@Column(typeHandler = TimestampToJodaDateTime.class)</code></p>
 
 <h2>
 <a id="typehandler" class="anchor" href="#typehandler" aria-hidden="true"><span class="octicon octicon-link"></span></a>TypeHandler</h2>
 
-<p>Below is the type handler interface</p>
+<p>Below is the TypeHandler interface</p>
 
 <pre><code>public interface TypeHandler {
   public &lt;TargetType&gt; TargetType transform(Object src);
 }
 </code></pre>
 
-<p>It takes the key's the value, transforms it, and returns a new value to be set as instance variable value.</p>
+<p>It takes value from the map and returns the transformed value, which will be set as the instance variable value.</p>
 
-<p>Below is the code for <code>TimestampToJodaDateTime</code> type handle used in the User Class example above. <code>java.sql.Timestamp</code> is converted  to a DateTime object. The returned value will be set as instance variable value.</p>
+<p>Below is the code for <code>TimestampToJodaDateTime</code> Type handler used in the User Class example above. <code>java.sql.Timestamp</code> is converted  to a DateTime object. The returned value will be set as instance variable value.</p>
 
 <pre><code>public class TimestampToJodaDateTime implements TypeHandler{
   @Override
@@ -140,15 +147,13 @@
   }
 }
 </code></pre>
-        </section>
-
-        <footer>
-          Fieldmapper is maintained by <a href="https://github.com/rizvn">rizvn</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-        
-      </div>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/rizvn">rizvn</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
     </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
