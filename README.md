@@ -15,11 +15,7 @@ Example table schema:
 #### 1. Create class, and annotate fields with @Column
 We want run a query to select all users and map, the results to a User class. So we first defined a user class
 
-    /**
-    * Annotate the field
-    */
     public class User {
-       
        @Column
        String firstName;
 
@@ -47,9 +43,9 @@ Now we call `FieldMapper.mapListToObjectList(..)` to map the list of maps to lis
 
 
 ## @Column
-By default FieldMapper will look for the key that matches the instance variable name. You can override this behavior by specifying the database column name like this: `@Column('FIRST_NAME')`. 
+By default FieldMapper will look for the key that matches the instance variable name in the map. You can override this behavior by specifying the database column name manually `@Column('FIRST_NAME')`.
 
-Once the key is found, it will set the value on the field. It will transparently handle most java types. However you may provide your own handler through the `typeHandler` attribute on @Column, like: `@Column(typeHandler = TimestampToJodaDateTime.class)` 
+Once the key is found, instance variable value will be set to the key's value. It will transparently handle most java types. However you may provide your own handlers through the `typeHandler` attribute on @Column `@Column(typeHandler = TimestampToJodaDateTime.class)`
 
 ##TypeHandler
 Below is the type handler interface
@@ -58,7 +54,7 @@ Below is the type handler interface
       public <TargetType> TargetType transform(Object src);
     }
 
-It takes the map takes the value returned from the db, and converts it into the type of the instance variable. 
+It takes the keys the value, transforms and returns a new value to be set as instance variable value.
 
 Below is the code for `TimestampToJodaDateTime` type handle used in the User Class above. `java.sql.Timestamp` is returned from the db. we convert it to a DateTime object and return the new object. The returned value will be set on the object. 
 
