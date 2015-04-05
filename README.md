@@ -19,7 +19,7 @@ We want run a query to select all users and map, the results to a User class. So
        @Column
        String firstName;
 
-       @Column
+       @Column("lastName")
        String lastName;
 
        @Column
