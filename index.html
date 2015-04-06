@@ -4,40 +4,28 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Field Mapper by rizvn</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-
+    <div class="wrapper">
       <header>
         <h1>Field Mapper</h1>
         <p>A library to convert a list of maps to a list of objects. </p>
+        <p class="view"><a href="https://github.com/rizvn/FieldMapper">View the Project on GitHub <small>rizvn/FieldMapper</small></a></p>
+        <ul>
+          <li><a href="https://github.com/rizvn/FieldMapper/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/rizvn/FieldMapper/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/rizvn/FieldMapper">View On <strong>GitHub</strong></a></li>
+        </ul>
       </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/rizvn/FieldMapper" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/rizvn/FieldMapper/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/rizvn/FieldMapper/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
-
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
       <section>
         <h1>
 <a id="fieldmapper-and-resultmap" class="anchor" href="#fieldmapper-and-resultmap" aria-hidden="true"><span class="octicon octicon-link"></span></a>FieldMapper and ResultMap</h1>
@@ -192,11 +180,11 @@ String firstName = results.get(0).getTyped(Users.FIRSTNAME);
 DateTime lastUpdated = results.get(0).getTyped(Users.LASTUPDATED, new TimestampToJodaDateTime());
 </code></pre>
       </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/rizvn">rizvn</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
-      </footer>
     </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/rizvn">rizvn</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
   </body>
