@@ -40,9 +40,11 @@
       </nav>
       <section>
         <h1>
-<a id="field-mapper" class="anchor" href="#field-mapper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Field Mapper</h1>
+<a id="fieldmapper-and-resultmap" class="anchor" href="#fieldmapper-and-resultmap" aria-hidden="true"><span class="octicon octicon-link"></span></a>FieldMapper and ResultMap</h1>
 
 <p>A library to convert list of maps <code>List&lt;Map&lt;String,Object&gt;&gt;</code> to a list of objects. It can be used with database access libraries such as spring jdbc, and JDBI which can return a list of maps from queries.</p>
+
+<p><strong>ResultMap</strong> can be used where classes are not required. So you can convert <code>List&lt;Map&lt;String, Object&gt;&gt;</code> to <code>List&lt;ResultMap&gt;</code> and have convenient methods to access values with types.</p>
 
 <h2>
 <a id="maven" class="anchor" href="#maven" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h2>
@@ -62,7 +64,7 @@
 <pre><code>&lt;dependency&gt;
    &lt;groupId&gt;com.rizvn&lt;/groupId&gt;
    &lt;artifactId&gt;fieldMapper&lt;/artifactId&gt;
-   &lt;version&gt;0.1&lt;/version&gt;
+   &lt;version&gt;0.1.2&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
 
@@ -146,6 +148,48 @@
     return new DateTime(timestamp);
   }
 }
+</code></pre>
+
+<h1>
+<a id="resultmap" class="anchor" href="#resultmap" aria-hidden="true"><span class="octicon octicon-link"></span></a>ResultMap</h1>
+
+<p>If you don't want to create classes, you can use use the ResultMap. ResultMap extends HashMap with 4 additional methods:</p>
+
+<ul>
+<li><code>&lt;T&gt; T getTyped(String key)</code></li>
+<li><code>&lt;T&gt; T getTyped(String key, TypeHandler typeHandler)</code></li>
+<li><code>&lt;T&gt; T getTyped(Enum keyEnum)</code></li>
+<li><code>&lt;T&gt; T getTyped(Enum keyEnum, TypeHandler typeHandler)</code></li>
+</ul>
+
+<p>You can transform any <code>List&lt;Map&lt;String, Object&gt;&gt;</code> to <code>List&lt;ResultMap&gt;</code> by calling <code>ResultMap.create(...)</code></p>
+
+<h2>
+<a id="result-map-example" class="anchor" href="#result-map-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Result Map Example</h2>
+
+<pre><code>//Transform list of maps to list of result map
+List&lt;ResultMap&gt; results = ResultMap.create(jdbcTemplate.queryForList("SELECT * FROM USERS"));
+
+//get typed value, specifying the key as a string
+String firstName = results.get(0).getTyped("FIRSTNAME");
+
+//get lastUpdated as Joda DateTime using typeHandler
+DateTime lastUpdated = results.get(0).getTyped("LASTUPDATED", new TimestampToJodaDateTime());
+</code></pre>
+
+<p>For Convenience there are also enum versions of the getTyped methods. Below is an example</p>
+
+<pre><code>static enum Users{
+    FIRSTNAME, LASTUPDATED
+}
+
+List&lt;ResultMap&gt; results = ResultMap.create(jdbcTemplate.queryForList("SELECT * FROM USERS"));
+
+//get typed value, using enum
+String firstName = results.get(0).getTyped(Users.FIRSTNAME);
+
+//get lastUpdated as Joda DateTime using typeHandler
+DateTime lastUpdated = results.get(0).getTyped(Users.LASTUPDATED, new TimestampToJodaDateTime());
 </code></pre>
       </section>
       <footer>
