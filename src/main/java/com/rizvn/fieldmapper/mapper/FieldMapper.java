@@ -42,6 +42,33 @@ public class FieldMapper{
      }
   };
 
+  public static class Tuple{
+    public Field field;
+    public Column column;
+  }
+
+  public static List<Tuple> findFieldsAnnotatedByColumn(Object object){
+    List<Tuple> tuples = new ArrayList<>();
+
+    try {
+      for (Field field : object.getClass().getDeclaredFields()) {
+        for (Annotation annotation : field.getDeclaredAnnotations()) { //get annotations on field
+          if (annotation instanceof Column) {                          //if annotation is a column annotation
+            Column colAnnotation = (Column) annotation;                //get the col annotation
+            Tuple tuple = new Tuple();
+            tuple.column = colAnnotation;
+            tuple.field = field;
+            tuples.add(tuple);
+          }
+        }
+      }
+    }
+    catch (Exception ex){
+      throw new RuntimeException(ex);
+    }
+    return tuples;
+  }
+
   public static void updateFieldValues(Map<String, Object> fromMap, Object object){
     try {
       for (Field field : object.getClass().getDeclaredFields()) {

@@ -28,4 +28,5 @@ public class FieldMapperIntegrationTest {
     List<User> users = FieldMapper.mapListToObjectList(results, User.class);
     Assert.assertFalse(users.isEmpty());
   }
+
 }

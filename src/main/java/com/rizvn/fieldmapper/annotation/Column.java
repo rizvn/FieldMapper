@@ -14,8 +14,8 @@ public @interface Column {
 
   String value() default "";
 
+  boolean id() default false;
+
   Class<?> typeHandler() default Object.class;
-
-
 
 }
