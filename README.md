@@ -1,5 +1,7 @@
-# Field Mapper
+# FieldMapper and ResultMap
 A library to convert list of maps `List<Map<String,Object>>` to a list of objects. It can be used with database access libraries such as spring jdbc, and JDBI which can return a list of maps from queries.
+
+**ResultMap** can be used where classes are not required. So you can convert `List<Map<String, Object>>` to `List<ResultMap>` and have convenient methods to access values with types.
 
 ##Maven
 The jars are hosted in github repo:
@@ -84,15 +86,15 @@ Below is the code for `TimestampToJodaDateTime` Type handler used in the User Cl
     }
 
 
-#Result Map
-If you dont want to create classes, you can use use the ResultMap. ResultMap extends HashMap with 4 additional methods:
+#ResultMap
+If you don't want to create classes, you can use use the ResultMap. ResultMap extends HashMap with 4 additional methods:
 
 * `<T> T getTyped(String key)`
 * `<T> T getTyped(String key, TypeHandler typeHandler)`
 * `<T> T getTyped(Enum keyEnum)`
 * `<T> T getTyped(Enum keyEnum, TypeHandler typeHandler)`
 
-You can transform any List<Map<String >> to List<ResultMap> by calling `ResultMap.create(...)`
+You can transform any `List<Map<String, Object>>` to `List<ResultMap>` by calling `ResultMap.create(...)`
 
 ##Result Map Example
 
@@ -106,7 +108,7 @@ You can transform any List<Map<String >> to List<ResultMap> by calling `ResultMa
     DateTime lastUpdated = results.get(0).getTyped("LASTUPDATED", new TimestampToJodaDateTime());
 
 
-For Convenience there are also enum versions of getTyped methods. Below is an example
+For Convenience there are also enum versions of the getTyped methods. Below is an example
 
     static enum Users{
         FIRSTNAME, LASTUPDATED
