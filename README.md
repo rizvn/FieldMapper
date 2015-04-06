@@ -82,3 +82,45 @@ Below is the code for `TimestampToJodaDateTime` Type handler used in the User Cl
         return new DateTime(timestamp);
       }
     }
+
+
+#Result Map
+If you dont want to create classes, you can use use the ResultMap. ResultMap extends HashMap with 4 additional methods:
+
+* `<T> T getTyped(String key)`
+* `<T> T getTyped(String key, TypeHandler typeHandler)`
+* `<T> T getTyped(Enum keyEnum)`
+* `<T> T getTyped(Enum keyEnum, TypeHandler typeHandler)`
+
+You can transform any List<Map<String >> to List<ResultMap> by calling `ResultMap.create(...)`
+
+##Result Map Example
+
+    //Transform list of maps to list of result map
+    List<ResultMap> results = ResultMap.create(jdbcTemplate.queryForList("SELECT * FROM USERS"));
+
+    //get typed value, specifying the key as a string
+    String firstName = results.get(0).getTyped("FIRSTNAME");
+
+    //get lastUpdated as Joda DateTime using typeHandler
+    DateTime lastUpdated = results.get(0).getTyped("LASTUPDATED", new TimestampToJodaDateTime());
+
+
+For Convenience there are also enum versions of getTyped methods. Below is an example
+
+    static enum Users{
+        FIRSTNAME, LASTUPDATED
+    }
+
+    List<ResultMap> results = ResultMap.create(jdbcTemplate.queryForList("SELECT * FROM USERS"));
+
+    //get typed value, using enum
+    String firstName = results.get(0).getTyped(Users.FIRSTNAME);
+
+    //get lastUpdated as Joda DateTime using typeHandler
+    DateTime lastUpdated = results.get(0).getTyped(Users.LASTUPDATED, new TimestampToJodaDateTime());
+
+
+
+
+
