@@ -4,11 +4,15 @@ import com.rizvn.fieldmapper.annotation.Column;
 import com.rizvn.fieldmapper.annotation.Table;
 import com.rizvn.fieldmapper.exception.FieldMapperException;
 import com.rizvn.fieldmapper.typehandler.TypeHandler;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +20,8 @@ import java.util.Map;
  * @author Riz
  */
 public class FieldMapper{
+
+  final private static Map<Class<?>, Map<String, Pair<Field, Column>>> metaDataCache = new HashMap<>();
 
   public static <T> T mapListToObjectList(List<Map<String, Object>> mapList, Class<?> toClass){
     List<Object> results = new ArrayList<>();
@@ -28,6 +34,7 @@ public class FieldMapper{
   public static <T> T mapToClass(Map<String, Object> fromMap, Class<?> toClass){
      try{
        Object instance = toClass.newInstance();
+
        updateFieldValues(fromMap, instance);
        return (T) instance;
      }
@@ -36,43 +43,68 @@ public class FieldMapper{
      }
   };
 
+  public static Map<String, Pair<Field, Column>> getMetaData(Class<?> aClass){
 
-  public static void updateFieldValues(Map<String, Object> fromMap, Object object){
     try {
-      for (Field field : object.getClass().getDeclaredFields()) {
-        for (Annotation annotation : field.getDeclaredAnnotations()) { //get annotations on field
-          if (annotation instanceof Column) {                          //if annotation is a column annotation
-            Column colAnnotation = (Column) annotation;                //get the col annotation
+      if(metaDataCache.containsKey(aClass)){
+        return metaDataCache.get(aClass);
+      }
 
+      Map<String, Pair<Field, Column>> metaData = new HashMap<>();
+      for (Field field : aClass.getDeclaredFields()) {
+        for (Annotation annotation : field.getDeclaredAnnotations()) {
+          if (annotation instanceof Column) {
+            Column colAnnotation = (Column) annotation;
             String fieldName = field.getName();
-
             //use the field value on annotation if provided for field name
             if (!colAnnotation.value().equals("")) {
               fieldName = colAnnotation.value();
             }
 
-            Class<?> targetType = field.getType();
-            Object value = fromMap.get(fieldName);  //get value from map
-            Boolean originalAccessibility = field.isAccessible();
-            field.setAccessible(true);
-
-            if(value == null){ //handle null value
-              field.set(object, null);
-            }
-            else if(colAnnotation.typeHandler() != Object.class){  //transform type using handler if specified
-              Class<?> handlerClass = colAnnotation.typeHandler();
-              TypeHandler typeHandler = (TypeHandler) handlerClass.newInstance();
-              field.set(object, typeHandler.transform(value)); //transform value
-            }
-            else if(targetType.isInstance(value)) {   //field type matches type in map
-              field.set(object, value);
-            }
-            field.setAccessible(originalAccessibility);
+            metaData.put(fieldName, Pair.of(field, colAnnotation));
           }
         }
       }
+      metaDataCache.put(aClass,metaData);
+      return metaData;
     }
     catch (Exception ex){
+        throw new RuntimeException(ex);
+    }
+  }
+
+
+  public static void updateFieldValues(Map<String, Object> fromMap, Object object){
+    Map<String, Pair<Field, Column>> metaData = getMetaData(object.getClass());
+
+    try
+    {
+      for(Map.Entry<String, Pair<Field, Column>> fieldEntry: metaData.entrySet()){
+        String fieldName = fieldEntry.getKey();
+        Field field = fieldEntry.getValue().getLeft();
+        Column colAnnotation = fieldEntry.getValue().getRight();
+
+        Class<?> targetType = field.getType();
+        Object value = fromMap.get(fieldName);  //get value from map
+        Boolean originalAccessibility = field.isAccessible();
+        field.setAccessible(true);
+
+        if(value == null){ //handle null value
+          field.set(object, null);
+        }
+        else if(colAnnotation.typeHandler() != Object.class){  //transform type using handler if specified
+          Class<?> handlerClass = colAnnotation.typeHandler();
+          TypeHandler typeHandler = (TypeHandler) handlerClass.newInstance();
+          field.set(object, typeHandler.transform(value)); //transform value
+        }
+        else if(targetType.isInstance(value)) {   //field type matches type in map
+          field.set(object, value);
+        }
+        field.setAccessible(originalAccessibility);
+      }
+    }
+    catch (Exception ex)
+    {
       throw new RuntimeException(ex);
     }
   }

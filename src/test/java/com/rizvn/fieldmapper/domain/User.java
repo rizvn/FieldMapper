@@ -13,14 +13,14 @@ import java.sql.SQLException;
  */
 public class User{
   @Column
-  String firstName;
+  public String firstName;
 
   @Column
-  String lastName;
+  public String lastName;
 
   @Column
-  String email;
+  public String email;
 
   @Column(typeHandler = TimestampToJodaDateTime.class)
-  DateTime lastUpdated;
+  public DateTime lastUpdated;
 }
