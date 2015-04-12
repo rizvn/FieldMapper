@@ -1,33 +1,16 @@
-package com.rizvn.fieldmapper.mapper;
+package com.rizvn.fieldmapper.query;
 
 import com.rizvn.fieldmapper.annotation.Column;
 import com.rizvn.fieldmapper.annotation.Table;
-import com.rizvn.fieldmapper.domain.User;
-import com.rizvn.fieldmapper.query.Crud;
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  * @author Riz
  */
-public class FieldMapperTest {
-
-   @Test
-   public void mapToClassTest(){
-     HashMap<String, Object> map = new HashMap<>();
-     map.put("firstName", "Riz");
-     map.put("lastUpdated", new Timestamp(new Date().getTime()));
-
-     User user = FieldMapper.mapToClass(map, User.class);
-     Assert.assertTrue(user instanceof  User);
-   }
+public class CrudTest {
 
   @Table
-  public static class Customer {
+  public static class Customer implements Crud{
     @Column(id=true)
     Long customerId;
 
@@ -44,7 +27,7 @@ public class FieldMapperTest {
     customer.customerId = 1L;
     customer.name = "Riz";
     customer.address = "some street";
-    String deleteQuery = FieldMapper.deleteQuery(customer);
+    String deleteQuery = customer.deleteQuery();
     System.out.println(deleteQuery);
   }
 
@@ -54,7 +37,7 @@ public class FieldMapperTest {
     customer.customerId = 1L;
     customer.name = "Riz";
     customer.address = "some street";
-    String updateQuery = FieldMapper.updateQuery(customer);
+    String updateQuery = customer.updateQuery();
     System.out.println(updateQuery);
   }
 
@@ -64,7 +47,7 @@ public class FieldMapperTest {
     customer.customerId = 1L;
     customer.name = "Riz";
     customer.address = "some street";
-    String insertQuery = FieldMapper.insertQuery(customer);
+    String insertQuery = customer.insertQuery();
     System.out.println(insertQuery);
   }
 }

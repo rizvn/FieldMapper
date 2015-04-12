@@ -9,15 +9,7 @@ import java.lang.annotation.Target;
  * @author Riz
  */
 @Retention(value= RetentionPolicy.RUNTIME)
-@Target(value = {ElementType.FIELD})
-public @interface Column {
-
+@Target(value = {ElementType.TYPE})
+public @interface Table {
   String value() default "";
-
-  boolean id() default false;
-
-  Class<?> typeHandler() default Object.class;
-
-  Class<?> outTypeHandler() default Object.class;
-
 }
