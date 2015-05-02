@@ -4,13 +4,10 @@ import com.rizvn.fieldmapper.annotation.Column;
 import com.rizvn.fieldmapper.annotation.Table;
 import com.rizvn.fieldmapper.exception.FieldMapperException;
 import com.rizvn.fieldmapper.typehandler.TypeHandler;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

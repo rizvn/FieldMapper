@@ -48,8 +48,6 @@ public class FieldMapperTest {
     Assert.assertNotNull(metaData);
   }
 
-
-
   @Test
   public void deleteQueryTest(){
     Customer customer = new Customer();

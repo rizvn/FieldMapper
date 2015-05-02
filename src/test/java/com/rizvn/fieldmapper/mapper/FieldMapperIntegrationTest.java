@@ -20,7 +20,8 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FieldMapperIntegrationTest {
 
-  @Resource JdbcTemplate jdbcTemplate;
+  @Resource
+  JdbcTemplate jdbcTemplate;
 
   @Test
   public void testMapListToObjectList(){
@@ -28,5 +29,4 @@ public class FieldMapperIntegrationTest {
     List<User> users = FieldMapper.mapListToObjectList(results, User.class);
     Assert.assertFalse(users.isEmpty());
   }
-
 }
